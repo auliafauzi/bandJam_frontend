@@ -3,7 +3,37 @@
     <div class="bg-texture"></div>
     <div class="rel">
       <div class="hero">
-        <div class="logo-mark"><i class="ti ti-music"></i></div>
+        <div class="logo-mark">
+  <svg class="guitar-pick clean-gradient" viewBox="0 0 100 92" xmlns="http://www.w3.org/2000/svg">
+    
+    <defs>
+      <linearGradient id="simpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color: #FFFFFF; stop-opacity: 1" />    <stop offset="35%" style="stop-color: #ECECEC; stop-opacity: 1" />   <stop offset="100%" style="stop-color: #A2A2A2; stop-opacity: 1" />  </linearGradient>
+
+      <filter id="softInnershadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
+        <feOffset dy="1" dx="0"/>
+        <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadow"/>
+        <feColorMatrix type="matrix" in="shadow" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0 0.15 0"/>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    
+    <path d="M 43,94 
+             C 47,98 53,98 57,94 
+             Q 85,54 93,25 
+             C 96,20 93,12 86,12 
+             Q 50,4 14,12 
+             C 7,12 4,20 7,25 
+             Q 15,54 43,94 
+             Z" 
+          fill="url(#simpleGrad)" 
+          filter="url(#softInnershadow)" />
+  </svg>
+</div>
         <div class="brand-name">BandJam</div>
         <p class="brand-desc">Platform dimana penghobby musik non-profesional bisa bertemu dan bermain musik bersama.</p>
       </div>

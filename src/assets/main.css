@@ -430,6 +430,43 @@ select option { background: #2a2220; }
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 20px rgba(224, 99, 95, 0.4);
 }
+.guitar-pick2 {
+  width: 38px;  /* Adjust this to make the pick larger or smaller inside the circle */
+  height: 32px;
+  /* Optional: gives it a subtle depth like the generated app icon */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15)); 
+}
+.guitar-pick {
+  /* Ubah dua angka di bawah ini untuk memperbesar/memperkecil */
+  width: 30px;  
+  height: 40px;
+  
+  /* Efek bayangan dan transisi bawaan */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+  transition: all 0.2s ease; /* Opsional: agar perubahan ukuran terasa halus */
+}
+.guitar-pick.metal-effect {
+  width: 35px;  /* Ukuran yang lebih besar agar efek metal terlihat jelas */
+  height: 35px;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2)); /* Bayangan luar yang sedikit lebih kuat */
+}
+.guitar-pick.clean-gradient {
+  /* Menggunakan ukuran yang sudah Anda setujui sebelumnya */
+  width: 36px;
+  height: 40px; 
+  
+  /* Memberikan bayangan luar (drop-shadow) yang lembut di atas warna coral */
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
+  
+  /* Opsional: Efek animasi halus saat logo disentuh/di-hover */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Membuat logo sedikit terangkat saat di-hover (bagus untuk web) */
+.logo-mark:hover .guitar-pick.clean-gradient {
+  transform: translateY(-1px) scale(1.02);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18));
+}
 .logo-mark i { font-size: 28px; color: #fff; }
 .brand-name { font-size: 26px; font-weight: 700; color: var(--text-white); letter-spacing: -0.3px; }
 .brand-desc { font-size: 13px; line-height: 1.65; color: #9a8878; max-width: 230px; }
