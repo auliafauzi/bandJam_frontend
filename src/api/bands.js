@@ -20,7 +20,8 @@ export const bandsApi = {
     // { user_id, invited_role, opening_messages: [...] }
     return http.post(`/api/bands/${bandId}/invite/`, payload)
   },
-  conversation(bandId) {
-    return http.get(`/api/bands/${bandId}/conversation/`)
+  conversation(bandId, convId = null) {
+    const params = convId ? `?conv_id=${convId}` : ''
+    return http.get(`/api/bands/${bandId}/conversation/${params}`)
   },
 }

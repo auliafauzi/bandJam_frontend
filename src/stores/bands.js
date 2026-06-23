@@ -40,11 +40,26 @@ export const useBandsStore = defineStore('bands', {
       return data
     },
 
-    async fetchConversation(bandId) {
+    async fetchConversation(bandId, convId = null) {
       this.messagesLoading = true
       this.error = null
       try {
-        const { data } = await bandsApi.conversation(bandId)
+        const { data } = await bandsApi.conversation(bandId, convId)
+        this.conversation = data
+        return data
+      } catch (err) {
+        this.error = extractError(err)
+        throw err
+      } finally {
+        this.messagesLoading = false
+      }
+    },
+
+    async fetchConversationById(convId) {
+      this.messagesLoading = true
+      this.error = null
+      try {
+        const { data } = await messagingApi.list(convId)
         this.conversation = data
         return data
       } catch (err) {
