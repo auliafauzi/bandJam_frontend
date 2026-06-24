@@ -59,15 +59,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import { optionsApi } from '../../api/options'
 
 const router = useRouter()
 const auth = useAuthStore()
 
-const instruments = ['Gitar', 'Bass', 'Drum', 'Vokal', 'Keyboard', 'Saksofon', 'Biola', 'Perkusi']
-const genres = ['Indie rock', 'Jazz', 'Funk', 'Akustik', 'Pop', 'Metal', 'Blues']
+const instruments = ref([])
+const genres = ref([])
 
 const selectedInstruments = ref([])
 const primaryInstrument = ref('')
@@ -76,6 +77,19 @@ const primaryGenre = ref('')
 
 const loading = ref(false)
 const error = ref('')
+
+onMounted(async () => {
+  try {
+    const [genreRes, instrumentRes] = await Promise.all([
+      optionsApi.genres(),
+      optionsApi.instruments(),
+    ])
+    genres.value = genreRes.data
+    instruments.value = instrumentRes.data
+  } catch {
+    error.value = 'Gagal memuat data. Coba lagi.'
+  }
+})
 
 // Tap once = selected, tap again = primary (and removed from selected list,
 // since the "primary" chip implicitly represents membership too).
