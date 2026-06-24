@@ -116,9 +116,9 @@ const otherGenres = computed(() =>
 
 const LEVEL_LABELS = {
   beginner: 'Beginner',
+  early_intermediate: 'Early Intermediate',
   intermediate: 'Intermediate',
   advanced: 'Advanced',
-  professional: 'Professional',
 }
 const levelLabel = computed(() => LEVEL_LABELS[user.value?.level] || '-')
 

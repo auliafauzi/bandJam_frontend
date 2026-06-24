@@ -5,11 +5,18 @@ const TOKEN_KEY = 'bandjam_token'
 const USER_KEY = 'bandjam_user'
 
 export const useAuthStore = defineStore('auth', {
+  // state: () => ({
+  //   token: localStorage.getItem(TOKEN_KEY) || null,
+  //   user: JSON.parse(localStorage.getItem(USER_KEY) || 'null'),
+  //   loading: false,
+  //   error: null,
+  // }),
   state: () => ({
     token: localStorage.getItem(TOKEN_KEY) || null,
     user: JSON.parse(localStorage.getItem(USER_KEY) || 'null'),
     loading: false,
     error: null,
+    quiz1Answer: null,
   }),
 
   getters: {
@@ -90,10 +97,25 @@ export const useAuthStore = defineStore('auth', {
         throw err
       }
     },
+
+    // async submitStep3(payload) {
+    //   this.error = null
+    //   try {
+    //     const { data } = await authApi.onboardingStep3(payload)
+    //     this.setUser(data)
+    //     return data
+    //   } catch (err) {
+    //     this.error = extractError(err)
+    //     throw err
+    //   }
+    // },
+
     async submitStep3(payload) {
       this.error = null
       try {
         const { data } = await authApi.onboardingStep3(payload)
+        localStorage.removeItem('bandjam_quiz1')  // clear any old value first
+        localStorage.setItem('bandjam_quiz1', payload.answer)
         this.setUser(data)
         return data
       } catch (err) {
@@ -101,10 +123,28 @@ export const useAuthStore = defineStore('auth', {
         throw err
       }
     },
+
+    // async submitStep4(payload) {
+    //   this.error = null
+    //   try {
+    //     const { data } = await authApi.onboardingStep4(payload)
+    //     this.setUser(data)
+    //     return data
+    //   } catch (err) {
+    //     this.error = extractError(err)
+    //     throw err
+    //   }
+    // },
+
     async submitStep4(payload) {
       this.error = null
       try {
-        const { data } = await authApi.onboardingStep4(payload)
+        const quiz1 = localStorage.getItem('bandjam_quiz1')
+        const { data } = await authApi.onboardingStep4({
+          quiz1: quiz1,
+          quiz2: payload.answer,
+        })
+        localStorage.removeItem('bandjam_quiz1')
         this.setUser(data)
         return data
       } catch (err) {
@@ -112,6 +152,7 @@ export const useAuthStore = defineStore('auth', {
         throw err
       }
     },
+
     async submitStep5(payload) {
       this.error = null
       try {
