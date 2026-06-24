@@ -19,7 +19,7 @@
         </div>
         <div>
           <div style="color:#fff; font-size:16px; font-weight:700;">{{ user?.nama_panggung || user?.nama }}</div>
-          <div style="color: var(--text-muted); font-size:12px;">{{ user?.username }}</div>
+          <div style="color: var(--text-muted); font-size:12px;">{{ user?.email }}</div>
         </div>
       </div>
 
@@ -27,13 +27,13 @@
       <input v-model="form.nama_panggung" type="text">
 
       <label class="field-label">Nama lengkap</label>
-      <input v-model="form.nama" type="text">
+      <p style="color: var(--text-white); font-size:13px; padding: 12px 14px; background: var(--bg-card); border-radius: 10px; border: 0.5px solid var(--border);">{{ user?.nama }}</p>
 
       <label class="field-label">Email</label>
-      <input v-model="form.email" type="email">
+      <p style="color: var(--text-white); font-size:13px; padding: 12px 14px; background: var(--bg-card); border-radius: 10px; border: 0.5px solid var(--border);">{{ user?.email }}</p>
 
       <label class="field-label">Nomor telepon</label>
-      <input v-model="form.phone" type="tel">
+      <p style="color: var(--text-white); font-size:13px; padding: 12px 14px; background: var(--bg-card); border-radius: 10px; border: 0.5px solid var(--border);">{{ user?.phone || '-' }}</p>
 
       <div class="section-tag" style="margin-top:20px;">Musik</div>
       <div style="display:flex; gap:8px; margin-bottom:8px;">
@@ -97,9 +97,9 @@ onMounted(async () => {
 
 function syncForm() {
   form.nama_panggung = user.value?.nama_panggung || ''
-  form.nama = user.value?.nama || ''
-  form.email = user.value?.email || ''
-  form.phone = user.value?.phone || ''
+  // form.nama = user.value?.nama || ''
+  // form.email = user.value?.email || ''
+  // form.phone = user.value?.phone || ''
 }
 
 const initials = computed(() => {
@@ -127,7 +127,7 @@ async function handleSave() {
   saved.value = false
   saving.value = true
   try {
-    const { data } = await authApi.updateMe({ ...form })
+    const { data } = await authApi.updateMe({nama_panggung: form.nama_panggung,})
     auth.setUser(data)
     saved.value = true
     setTimeout(() => (saved.value = false), 2000)

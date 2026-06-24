@@ -2,11 +2,11 @@ import http from './http'
 
 export const authApi = {
   signup(payload) {
-    // payload: { username, email, password, nama, phone, gender, avatar_color }
+    // payload: { identifier, password }
     return http.post('/api/auth/signup/', payload)
   },
   login(payload) {
-    // payload: { username, password }
+    // payload: { identifier, password }
     return http.post('/api/auth/login/', payload)
   },
   logout() {

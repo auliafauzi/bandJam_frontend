@@ -43,12 +43,12 @@
 
         <div v-if="error" class="form-error">{{ error }}</div>
 
-        <label class="field-label" style="margin-top:0;">Nomor telepon / email</label>
+        <label class="field-label" style="margin-top:0;">Email atau nomor telepon</label>
         <input
-          v-model="username"
+          v-model="identifier"
           type="text"
-          placeholder="08xx, kamu@email.com,"
-          autocomplete="username"
+          placeholder="kamu@email.com, 08xx"
+          autocomplete="email"
         >
 
         <label class="field-label">Kata sandi</label>
@@ -87,7 +87,7 @@ import { useAuthStore } from '../stores/auth'
 const router = useRouter()
 const auth = useAuthStore()
 
-const username = ref('')
+const identifier = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
@@ -95,13 +95,13 @@ const error = ref('')
 
 async function handleLogin() {
   error.value = ''
-  if (!username.value || !password.value) {
+  if (!identifier.value || !password.value) {
     error.value = 'Nomor telepon/email dan kata sandi wajib diisi.'
     return
   }
   loading.value = true
   try {
-    const user = await auth.login({ username: username.value, password: password.value })
+    const user = await auth.login({ identifier: identifier.value, password: password.value })
     if (user.onboarding_complete) {
       router.push('/bands')
     } else {

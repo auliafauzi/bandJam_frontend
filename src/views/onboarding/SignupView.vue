@@ -17,9 +17,9 @@
       <label class="field-label" style="margin-top:0;">Nama lengkap</label>
       <input v-model="form.nama" type="text" placeholder="cth. Andra Ramadhan">
 
-      <label class="field-label">Username</label>
+<!--       <label class="field-label">Username</label>
       <input v-model="form.username" type="text" placeholder="cth. andraramadhan">
-      <p class="helper-text" style="margin-top:4px;">Dipakai untuk login. Hanya huruf, angka, dan underscore.</p>
+      <p class="helper-text" style="margin-top:4px;">Dipakai untuk login. Hanya huruf, angka, dan underscore.</p> -->
 
       <label class="field-label">Nomor telepon</label>
       <input v-model="form.phone" type="tel" placeholder="08xx xxxx xxxx">
@@ -75,7 +75,7 @@ const auth = useAuthStore()
 
 const form = reactive({
   nama: '',
-  username: '',
+  // username: '',
   phone: '',
   email: '',
   gender: '',
@@ -95,8 +95,8 @@ function randomAvatarColor() {
 async function handleNext() {
   error.value = ''
 
-  if (!form.nama || !form.username || !form.email || !form.password) {
-    error.value = 'Nama, username, email, dan kata sandi wajib diisi.'
+  if (!form.nama || !form.email || !form.password) {
+    error.value = 'Nama, email, dan kata sandi wajib diisi.'
     return
   }
   if (form.password.length < 6) {
@@ -107,7 +107,7 @@ async function handleNext() {
   loading.value = true
   try {
     await auth.signup({
-      username: form.username,
+      // username: form.username,
       email: form.email,
       password: form.password,
       nama: form.nama,
