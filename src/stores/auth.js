@@ -58,6 +58,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const { data } = await authApi.login(payload)
         this._persist(data.token, data.user)
+        localStorage.removeItem('bandjam_matchmaking_shown')
         return data.user
       } catch (err) {
         this.error = extractError(err)
@@ -83,6 +84,8 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       localStorage.removeItem(TOKEN_KEY)
       localStorage.removeItem(USER_KEY)
+      localStorage.removeItem('bandjam_matchmaking_shown')
+      localStorage.removeItem('bandjam_quiz1')
     },
 
     // ── Onboarding step actions — each updates and persists the user ──
