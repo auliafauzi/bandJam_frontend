@@ -6,8 +6,9 @@
       <div class="prog-seg"></div>
       <div class="prog-seg"></div>
       <div class="prog-seg"></div>
+      <div class="prog-seg"></div>
     </div>
-    <div class="step-label">LANGKAH 1 DARI 5</div>
+    <div class="step-label">LANGKAH 1 DARI 6</div>
     <h2 class="screen-title">Buat akunmu</h2>
     <p class="screen-subtitle">Pertama, ayo daftar dulu. Setelah ini kamu akan mengatur profil musisimu.</p>
 

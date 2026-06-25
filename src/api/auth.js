@@ -36,6 +36,10 @@ export const authApi = {
     // { kota, kecamatan, kota2?, kecamatan2? }
     return http.post('/api/auth/onboarding/step5/', payload)
   },
+  onboardingStep5b(payload) {
+    // { rehearsal_preference: [...] }
+    return http.post('/api/auth/onboarding/step5b/', payload)
+  },
   onboardingStep6(payload) {
     // { nama_panggung }
     return http.post('/api/auth/onboarding/step6/', payload)

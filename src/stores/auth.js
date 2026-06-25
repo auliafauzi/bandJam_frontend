@@ -155,11 +155,21 @@ export const useAuthStore = defineStore('auth', {
         throw err
       }
     },
-
     async submitStep5(payload) {
       this.error = null
       try {
         const { data } = await authApi.onboardingStep5(payload)
+        this.setUser(data)
+        return data
+      } catch (err) {
+        this.error = extractError(err)
+        throw err
+      }
+    },
+    async submitStep5b(payload) {
+      this.error = null
+      try {
+        const { data } = await authApi.onboardingStep5b(payload)
         this.setUser(data)
         return data
       } catch (err) {

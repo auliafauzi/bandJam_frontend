@@ -1,6 +1,7 @@
 <template>
   <div class="screen active" id="s-chats">
 
+    <!-- Radar overlay -->
     <MatchmakingRadar
       v-if="showRadar"
       :message="radarMessage"
@@ -27,16 +28,67 @@
 
         <div v-else-if="error" class="form-error">{{ error }}</div>
 
+        <!-- ── SUPERADMIN VIEW ── -->
         <template v-else-if="isAdmin">
-          ...
+          <div v-if="bands.length === 0" class="center-state">
+            <i class="ti ti-music" style="font-size:32px; color: var(--text-dim);"></i>
+            <span>Belum ada band.</span>
+          </div>
+
+          <div v-for="band in bands" :key="band.id" style="margin-bottom:16px;">
+            <div style="color: var(--red); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">
+              {{ band.nama }}
+              <span style="color: var(--text-dim); font-weight:400; text-transform:none; letter-spacing:0;">
+                · {{ Array.isArray(band.genre) ? band.genre.join(', ') : band.genre }}
+              </span>
+            </div>
+
+            <div v-if="band.conversations.length === 0" style="color: var(--text-dim); font-size:12px; padding: 0 0 8px 8px;">
+              Belum ada percakapan.
+            </div>
+
+            <div
+              v-for="conv in band.conversations"
+              :key="conv.id"
+              class="band-card"
+              style="margin-bottom:8px; cursor:pointer;"
+              @click="openAdminChat(band, conv)"
+            >
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div class="band-card-title">{{ conv.user_nama || conv.user_username }}</div>
+                  <div class="band-card-sub">
+                    {{ conv.invited_role }} ·
+                    <span :style="statusStyle(conv.status)">{{ statusLabel(conv.status) }}</span>
+                  </div>
+                </div>
+                <span v-if="conv.unread_count > 0" class="badge">{{ conv.unread_count }}</span>
+              </div>
+            </div>
+          </div>
         </template>
 
+        <!-- ── REGULAR USER VIEW ── -->
         <template v-else>
-          ...
+          <div v-if="bands.length === 0" class="center-state">
+            <i class="ti ti-message-circle" style="font-size:32px; color: var(--text-dim);"></i>
+            <span>Belum ada percakapan.</span>
+          </div>
+
+          <div v-for="band in bands" :key="band.id" class="band-card" @click="openChat(band)">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <div class="band-card-title">{{ band.nama }}</div>
+                <div class="band-card-sub">
+                  {{ band.has_replied ? 'Sudah dibalas' : 'Menunggu balasanmu' }}
+                </div>
+              </div>
+              <span v-if="band.unread_count > 0" class="badge">{{ band.unread_count }}</span>
+            </div>
+          </div>
         </template>
       </div>
-    </template>
-
+      </template>
     <BottomNav />
   </div>
 </template>

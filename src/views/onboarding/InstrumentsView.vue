@@ -6,8 +6,9 @@
       <div class="prog-seg"></div>
       <div class="prog-seg"></div>
       <div class="prog-seg"></div>
+      <div class="prog-seg"></div>
     </div>
-    <div class="step-label">LANGKAH 2 DARI 5</div>
+    <div class="step-label">LANGKAH 2 DARI 6</div>
     <h2 class="screen-title">Kamu main apa?</h2>
     <p class="screen-subtitle">
       Pilih instrumenmu! <br>

@@ -14,6 +14,7 @@ import ChatsView from '../views/ChatsView.vue'
 import ChatDetailView from '../views/ChatDetailView.vue'
 import SupportView from '../views/SupportView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import RehearsalView from '../views/onboarding/RehearsalView.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -27,6 +28,7 @@ const routes = [
   { path: '/onboarding/location', name: 'onboarding-location', component: LocationView, meta: { requiresAuth: true } },
   { path: '/onboarding/stage-name', name: 'onboarding-stage-name', component: StageNameView, meta: { requiresAuth: true } },
   { path: '/onboarding/welcome', name: 'onboarding-welcome', component: WelcomeView, meta: { requiresAuth: true } },
+  { path: '/onboarding/rehearsal', name: 'onboarding-rehearsal', component: RehearsalView, meta: { requiresAuth: true } },
 
   // Main app (requires completed onboarding)
   { path: '/bands', name: 'bands', component: BandsView, meta: { requiresAuth: true, requiresOnboarding: true } },

@@ -82,7 +82,7 @@ async function handleNext() {
   loading.value = true
   try {
     await auth.submitStep5(payload)
-    router.push('/onboarding/stage-name')
+    router.push('/onboarding/rehearsal')
   } catch {
     error.value = auth.error || 'Gagal menyimpan. Coba lagi.'
   } finally {
