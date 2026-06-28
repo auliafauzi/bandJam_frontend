@@ -30,11 +30,13 @@
 
         <!-- ── SUPERADMIN VIEW ── -->
         <template v-else-if="isAdmin">
-          <div v-if="bands.length === 0" class="center-state">
+
+          <div v-if="bands.length === 0 && supportConvs.length === 0" class="center-state">
             <i class="ti ti-music" style="font-size:32px; color: var(--text-dim);"></i>
             <span>Belum ada band.</span>
           </div>
 
+          <!-- Band conversations -->
           <div v-for="band in bands" :key="band.id" style="margin-bottom:16px;">
             <div style="color: var(--red); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">
               {{ band.nama }}
@@ -66,15 +68,40 @@
               </div>
             </div>
           </div>
+
+          <!-- Support conversations — superadmin -->
+          <div v-if="supportConvs.length > 0" style="margin-bottom:16px;">
+            <div style="color: var(--red); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">
+              Support
+            </div>
+            <div
+              v-for="conv in supportConvs"
+              :key="conv.id"
+              class="band-card"
+              style="margin-bottom:8px; cursor:pointer;"
+              @click="$router.push(`/support-admin/${conv.id}`)"
+            >
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div class="band-card-title">{{ conv.user_nama || conv.user_email }}</div>
+                  <div class="band-card-sub">{{ topicLabel(conv.topic) }}</div>
+                </div>
+                <span v-if="!conv.is_unlocked" class="badge" style="background: var(--text-dim);">baru</span>
+              </div>
+            </div>
+          </div>
+
         </template>
 
         <!-- ── REGULAR USER VIEW ── -->
         <template v-else>
-          <div v-if="bands.length === 0" class="center-state">
+
+          <div v-if="bands.length === 0 && supportConvs.length === 0" class="center-state">
             <i class="ti ti-message-circle" style="font-size:32px; color: var(--text-dim);"></i>
             <span>Belum ada percakapan.</span>
           </div>
 
+          <!-- Band conversations -->
           <div v-for="band in bands" :key="band.id" class="band-card" @click="openChat(band)">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <div>
@@ -86,9 +113,35 @@
               <span v-if="band.unread_count > 0" class="badge">{{ band.unread_count }}</span>
             </div>
           </div>
+
+          <!-- Support conversations — regular user -->
+          <div v-if="supportConvs.length > 0" style="margin-top:16px; margin-bottom:16px;">
+            <div style="color: var(--red); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">
+              Support
+            </div>
+            <div
+              v-for="conv in supportConvs"
+              :key="conv.id"
+              class="band-card"
+              style="margin-bottom:8px; cursor:pointer;"
+              @click="$router.push(`/support/${conv.topic}`)"
+            >
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div class="band-card-title">{{ topicLabel(conv.topic) }}</div>
+                  <div class="band-card-sub">
+                    {{ conv.messages?.length ? conv.messages[conv.messages.length - 1].text : 'Belum ada pesan' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </template>
+
       </div>
-      </template>
+    </template>
+
     <BottomNav />
   </div>
 </template>
@@ -98,6 +151,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useBandsStore } from '../stores/bands'
+import { supportApi } from '../api/support'
 import BottomNav from '../components/BottomNav.vue'
 import MatchmakingRadar from '../components/MatchmakingRadar.vue'
 
@@ -109,6 +163,7 @@ const isAdmin = computed(() => auth.user?.is_superuser)
 const loading = ref(true)
 const error = ref('')
 const bands = ref([])
+const supportConvs = ref([])
 const showRadar = ref(false)
 const radarMessage = ref('Sedang mencari band untukmu')
 const radarShownOnce = ref(false)
@@ -139,14 +194,23 @@ async function fetchBands() {
     await store.fetchBands()
     if (isAdmin.value) {
       bands.value = store.bands
+      // Also fetch support conversations
+      try {
+        const { data } = await supportApi.list()
+        supportConvs.value = data
+      } catch {
+        // non-critical, ignore
+      }
     } else {
       bands.value = store.bands.filter((b) => b.conversation_id)
 
-      // if (bands.value.length === 0) {
-      //   radarMessage.value = 'Mencari ulang band yang cocok untukmu'
-      //   showRadar.value = true
-      //   return
-      // }
+      // Fetch user's own support conversations
+      try {
+        const { data } = await supportApi.listUser()
+        supportConvs.value = data
+      } catch {
+        // non-critical
+      }
 
       if (bands.value.length === 0 && !radarShownOnce.value) {
         radarMessage.value = 'Mencari ulang band yang cocok untukmu'
@@ -193,5 +257,16 @@ function openChat(band) {
 
 function openAdminChat(band, conv) {
   router.push(`/chats/${band.id}/${conv.id}`)
+}
+
+function topicLabel(topic) {
+  const labels = {
+    investor: 'Be our investor',
+    donate: 'Donate',
+    join_team: 'Join our team',
+    add_studio: 'Add studio to our database',
+    additional_player: 'Be our additional player',
+  }
+  return labels[topic] || topic
 }
 </script>
